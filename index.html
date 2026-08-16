@@ -1209,6 +1209,16 @@
             document.getElementById("char-constellation-badge").innerText = char.constellation;
             document.getElementById("char-portrait-img").src = char.portraitUrl;
 
+            // Render Rarity Stars Dynamically based on character rarity
+            const rarityContainer = document.getElementById("char-rarity-stars");
+            rarityContainer.innerHTML = "";
+            const starCount = char.rarity || 5;
+            for (let i = 0; i < starCount; i++) {
+                const starIcon = document.createElement("i");
+                starIcon.className = "fa-solid fa-star";
+                rarityContainer.appendChild(starIcon);
+            }
+
             // Element Icon
             const elementObj = ELEMENT_THEMES[char.element] || ELEMENT_THEMES.Pyro;
             document.getElementById("char-element-icon").src = elementObj.glowIcon;
