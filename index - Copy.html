@@ -221,11 +221,6 @@
                         People say my builds and teams are bad. You judge.<br>
                         This page is a HUGE work in progress. Expect missing information on characters and a wall of Alyoshas on the teams page.
                     </p>
-                    <div class="pt-2 flex flex-wrap items-center gap-4 justify-center md:justify-start">
-                        <button onclick="navigateToCharacter(CHARACTERS_DATA[0].id)" class="px-6 py-3 rounded-xl accent-bg text-gray-950 font-bold text-sm hover:brightness-110 shadow-lg transition-all flex items-center gap-2">
-                            <i class="fa-solid fa-shield-halved"></i> Explore Builds
-                        </button>
-                    </div>
                 </div>
 
                 <!-- Featured Card Graphic -->
@@ -285,6 +280,9 @@
                         <div class="w-56 h-72 my-2 rounded-2xl overflow-hidden glass-card border border-white/20 relative shadow-2xl group">
                             <img id="char-portrait-img" src="" onerror="this.src='https://file.garden/abuoURIn4hVA2XAy/Genshin%20Builds/Placeholders/Character.gif'" alt="Character Portrait" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-md border border-white/15 text-[11px] font-bold text-white flex items-center gap-1.5">
+                                <i class="fa-solid fa-shield text-[10px] accent-text"></i> <span id="char-level-badge">Level 90</span>
+                            </div>
                         </div>
 
                         <!-- Name & Rarity Stars -->
@@ -303,7 +301,7 @@
                             <h3 class="font-genshin text-sm font-bold text-white flex items-center gap-2">
                                 <i class="fa-solid fa-khanda accent-text"></i> WEAPON
                             </h3>
-                            <span id="weapon-level-badge" class="text-xs font-bold text-gray-300 px-2.5 py-0.5 rounded-full bg-white/10">Lvl 90 / R5</span>
+                            <span id="weapon-level-badge" class="text-xs font-bold text-gray-300 px-2.5 py-0.5 rounded-full bg-white/10">Level 90 / R5</span>
                         </div>
                         
                         <div class="flex items-center gap-4">
@@ -483,10 +481,36 @@
                 </div>
             </div>
 
-            <!-- Volume Control -->
-            <div class="hidden md:flex items-center justify-end gap-2 w-1/4">
-                <i class="fa-solid fa-volume-high text-xs text-gray-400"></i>
-                <input type="range" id="audio-volume" value="70" min="0" max="100" oninput="setVolume(this.value)" class="w-24 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-current" style="accent-color: var(--theme-accent);">
+            <!-- Volume & Playlist Drawer Toggle -->
+            <div class="flex items-center justify-end gap-3 w-full md:w-1/4">
+                <div class="hidden lg:flex items-center gap-2">
+                    <i class="fa-solid fa-volume-high text-xs text-gray-400"></i>
+                    <input type="range" id="audio-volume" value="70" min="0" max="100" oninput="setVolume(this.value)" class="w-20 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-current" style="accent-color: var(--theme-accent);">
+                </div>
+                <!-- Playlist Drawer Toggle Button -->
+                <button onclick="togglePlaylistDrawer()" class="px-3 py-1.5 rounded-xl glass-card border border-white/15 text-xs font-semibold text-white hover:border-white/30 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-list-ul accent-text"></i> Playlist
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLAYLIST DRAWER MODAL -->
+    <div id="playlist-drawer" class="fixed inset-0 z-50 flex items-end md:items-center justify-center md:justify-end p-0 md:p-6 bg-black/60 backdrop-blur-sm hidden">
+        <div class="glass-panel rounded-t-3xl md:rounded-3xl p-6 border border-white/15 w-full md:max-w-md max-h-[80vh] flex flex-col space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-music accent-text"></i>
+                    <h3 class="font-genshin text-lg font-bold text-white">SOUNDTRACK PLAYLIST</h3>
+                </div>
+                <button onclick="togglePlaylistDrawer()" class="w-8 h-8 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <p class="text-xs text-gray-300">Click any track to play instantly:</p>
+
+            <div id="playlist-items-container" class="space-y-2 overflow-y-auto pr-1 flex-grow">
             </div>
         </div>
     </div>
@@ -556,6 +580,7 @@
                 name: "Alyosha",
                 title: "Build in progress",
                 element: "Electro",
+                level: "Level 20",
                 constellation: "C1",
                 rarity: 4,
                 portraitUrl: "https://64.media.tumblr.com/e6a1bac10ed3a340aa0b82f80581c298/1a4aa82e5b9d11bb-39/s1280x1920/fbbb081eec82ca7cc836275d3bafa4d616af3ff9.png",
@@ -635,6 +660,7 @@
                 name: "Chasca",
                 title: "Main DPS",
                 element: "Anemo",
+                level: "90",
                 constellation: "C0",
                 rarity: 5,
                 portraitUrl: "https://64.media.tumblr.com/1df45c0ca787a9439822c28ca479aa20/13b566fc7e199e0c-e5/s2048x3072/d1f00baef76d4f53a502bed761d1682f228ed9e3.jpg",
@@ -714,6 +740,7 @@
                 name: "Zibai",
                 title: "Main DPS",
                 element: "Geo",
+                level: "80",
                 constellation: "C0",
                 rarity: 5,
                 portraitUrl: "https://64.media.tumblr.com/c9fbebb84b71e2290cb25d72d08c657f/d11e4fd2040a53c9-bc/s2048x3072/7a14317a7aabcaa97e1a07cbdbabc03d24f55366.jpg",
@@ -963,6 +990,7 @@
 
         let currentTrackIndex = 0;
         let isPlaying = false;
+        let isLooping = false;
         let activeCharacterId = CHARACTERS_DATA[0].id;
 
         // Audio element DOM reference
@@ -984,6 +1012,7 @@
 
             // 3. Populate Theme Dropdown List
             renderThemeDropdownOptions();
+            renderPlaylistDrawerItems();
 
             // 4. Render Characters in Nav Dropdown & Home Grid
             renderCharacterDropdown();
@@ -998,7 +1027,14 @@
 
             // Audio Event Listeners
             audioElement.addEventListener("timeupdate", updateAudioProgress);
-            audioElement.addEventListener("ended", () => nextSong());
+            audioElement.addEventListener("ended", () => {
+                if (isLooping) {
+                    audioElement.currentTime = 0;
+                    audioElement.play();
+                } else {
+                    nextSong();
+                }
+            });
         });
 
         /* ==========================================================================
@@ -1126,10 +1162,11 @@
                     </div>
                     <div class="flex-grow min-w-0">
                         <div class="flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-yellow-300">${c.constellation}</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-white border border-white/15">${c.constellation}</span>
                             <span class="text-xs text-gray-400 uppercase tracking-wider">${c.element}</span>
+                            <span class="text-[10px] accent-text ml-auto font-semibold">${c.level || 'Level 90'}</span>
                         </div>
-                        <h4 class="font-genshin text-lg font-bold text-white truncate group-hover:text-yellow-400 transition">${c.name}</h4>
+                        <h4 class="font-genshin text-lg font-bold text-white truncate hover-accent transition">${c.name}</h4>
                         <p class="text-xs text-gray-400 truncate">${c.weapon.name}</p>
                     </div>
                     <i class="fa-solid fa-chevron-right text-gray-500 group-hover:text-white transition"></i>
@@ -1207,6 +1244,7 @@
             document.getElementById("char-name").innerText = char.name;
             document.getElementById("char-title").innerText = char.title;
             document.getElementById("char-constellation-badge").innerText = char.constellation;
+            document.getElementById("char-level-badge").innerText = char.level || "Level 90";
             document.getElementById("char-portrait-img").src = char.portraitUrl;
 
             // Render Rarity Stars Dynamically based on character rarity
@@ -1257,7 +1295,7 @@
                     <div class="min-w-0">
                         <span class="text-[10px] text-gray-400 uppercase font-semibold block">${t.type}</span>
                         <h4 class="font-bold text-white text-xs truncate">${t.name}</h4>
-                        <span class="text-[10px] accent-text font-bold">Lvl ${t.level}</span>
+                        <span class="text-[10px] accent-text font-bold">Level ${t.level}</span>
                     </div>
                 `;
                 talentsContainer.appendChild(card);
@@ -1334,6 +1372,18 @@
             if (isPlaying) audioElement.play();
         }
 
+        function toggleLoop() {
+            isLooping = !isLooping;
+            const btn = document.getElementById("audio-loop-btn");
+            if (isLooping) {
+                btn.classList.remove("opacity-60");
+                btn.classList.add("accent-text");
+            } else {
+                btn.classList.add("opacity-60");
+                btn.classList.remove("accent-text");
+            }
+        }
+
         function shufflePlaylist(autoPlay = true) {
             for (let i = playlist.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -1366,6 +1416,42 @@
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function togglePlaylistDrawer() {
+            document.getElementById("playlist-drawer").classList.toggle("hidden");
+        }
+
+        function renderPlaylistDrawerItems() {
+            const container = document.getElementById("playlist-items-container");
+            if (!container) return;
+            container.innerHTML = "";
+
+            playlist.forEach((track, index) => {
+                const isCurrent = index === currentTrackIndex;
+                const item = document.createElement("button");
+                item.className = `w-full p-3 rounded-2xl flex items-center justify-between text-left transition ${isCurrent ? 'accent-bg text-gray-950 font-bold shadow' : 'glass-card text-gray-200 hover:bg-white/10'}`;
+                item.onclick = () => {
+                    loadTrack(index);
+                    audioElement.play().then(() => {
+                        isPlaying = true;
+                        document.getElementById("audio-play-btn").innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    });
+                };
+                item.innerHTML = `
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-8 h-8 rounded-xl ${isCurrent ? 'bg-gray-950/20 text-gray-950' : 'glass-panel text-white'} flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                            ${index + 1}
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="text-xs truncate ${isCurrent ? 'text-gray-950' : 'text-white'} font-bold">${track.title}</h4>
+                            <p class="text-[10px] ${isCurrent ? 'text-gray-900/80' : 'text-gray-400'} truncate">${track.artist}</p>
+                        </div>
+                    </div>
+                    ${isCurrent ? '<i class="fa-solid fa-volume-high text-xs ml-2"></i>' : ''}
+                `;
+                container.appendChild(item);
+            });
         }
 
         /* ==========================================================================
