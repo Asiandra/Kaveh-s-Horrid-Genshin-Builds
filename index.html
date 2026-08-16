@@ -1343,6 +1343,7 @@
             audioElement.src = track.src;
             document.getElementById("audio-title").innerText = track.title;
             document.getElementById("audio-artist").innerText = track.artist;
+            renderPlaylistDrawerItems();
         }
 
         function togglePlay() {
